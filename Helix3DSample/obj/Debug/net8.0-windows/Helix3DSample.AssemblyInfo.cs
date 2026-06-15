@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Helix3DSample")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6063dd1f1a0ae3e350aad7711d154d4c4d3f0968")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+46cda7ac6d11763bbb8764ebb3342d25cd0ed826")]
 [assembly: System.Reflection.AssemblyProductAttribute("Helix3DSample")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Helix3DSample")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

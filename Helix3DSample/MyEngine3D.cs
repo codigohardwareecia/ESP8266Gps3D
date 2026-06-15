@@ -324,9 +324,11 @@ namespace Helix3DSample
             }
             catch (Exception ex)
             {
-
+                var teste =ex.Message;
             }
         }
+
+        int countPointsLabels = 0;
 
         public async Task ApplyLabels()
         {
@@ -336,37 +338,42 @@ namespace Helix3DSample
                 {
                     foreach (var gpsData in _gpsData)
                     {
-                        _form.Invoke(new Action(async () =>
+                        countPointsLabels++;
+
+                        if(countPointsLabels >= 10)
                         {
-                            var pos = new Point3D(gpsData.X, gpsData.Y, gpsData.Z);
-
-                            // 1. Adiciona o ponto à linha normalmente
-                            _lineTrailCollection.Add(pos);
-                            _lineTrail3D.Path = _lineTrailCollection;
-
-                            // 2. Define quanto você quer que o texto suba (ex: 5 unidades)
-                            double alturaOffset = 2.0;
-                            var posicaoTexto = new Point3D(gpsData.X, gpsData.Y, gpsData.Z + alturaOffset);
-
-                            // Se o seu gráfico usar o eixo Y para cima, use:
-                            // var posicaoTexto = new Point3D(gpsData.X, gpsData.Y + alturaOffset, gpsData.Z);
-
-                            // 3. Cria o texto na nova posição ajustada
-                            var address = await GetAddressFromCoords(gpsData.Lat, gpsData.Lng);
-
-                            var text = new BillboardTextVisual3D
+                            _form.Invoke(new Action(async () =>
                             {
-                                Text = $"Alt: {gpsData.Alt:F4}" + Environment.NewLine + address,
-                                Position = posicaoTexto, // Usa a posição com o offset
-                                Foreground = System.Windows.Media.Brushes.White,
-                                FontSize = 9,
-                                HorizontalAlignment = System.Windows.HorizontalAlignment.Center, // Centraliza horizontalmente
-                                VerticalAlignment = System.Windows.VerticalAlignment.Bottom     // Alinha a base do texto
-                            };
-                            _viewport.Children.Add(text);
-  
-                            addressAnterior = address;
-                        }));
+                                var pos = new Point3D(gpsData.X, gpsData.Y, gpsData.Z);
+
+                                // 1. Adiciona o ponto à linha normalmente
+                                //_lineTrailCollection.Add(pos);
+                                // 2. Define quanto você quer que o texto suba (ex: 5 unidades)
+                                double alturaOffset = 2.0;
+                                var posicaoTexto = new Point3D(gpsData.X, gpsData.Y, gpsData.Z + alturaOffset);
+
+                                // Se o seu gráfico usar o eixo Y para cima, use:
+                                // var posicaoTexto = new Point3D(gpsData.X, gpsData.Y + alturaOffset, gpsData.Z);
+
+                                // 3. Cria o texto na nova posição ajustada
+                                // var address = await GetAddressFromCoords(gpsData.Lat, gpsData.Lng);
+
+                                var text = new BillboardTextVisual3D
+                                {
+                                    Text = $"Alt: {gpsData.Alt:F0} Vel. {gpsData.Spd:F0} Hdop. {gpsData.Hdop:F0}" + Environment.NewLine,
+                                    Position = posicaoTexto, // Usa a posição com o offset
+                                    Foreground = System.Windows.Media.Brushes.White,
+                                    FontSize = 18,
+                                    HorizontalAlignment = System.Windows.HorizontalAlignment.Center, // Centraliza horizontalmente
+                                    VerticalAlignment = System.Windows.VerticalAlignment.Bottom     // Alinha a base do texto
+                                };
+                                _viewport.Children.Add(text);
+
+                                // addressAnterior = address;
+                            }));
+                            countPointsLabels = 0;
+                        }
+
 
                         await Task.Delay(10);
                     }
@@ -403,7 +410,7 @@ namespace Helix3DSample
             using (HttpClient client = new HttpClient())
             {
                 // O Nominatim exige um User-Agent para identificar sua aplicação
-                client.DefaultRequestHeaders.Add("User-Agent", "MinhaAplicacaoCsharp/1.0");
+                client.DefaultRequestHeaders.Add("User-Agent", "MinhaAplicacaoCsharp/2.0");
 
                 string url = $"https://nominatim.openstreetmap.org/reverse?format=json&lat={lat}&lon={lon}";
 
